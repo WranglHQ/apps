@@ -1,0 +1,258 @@
+<wlabel> 👋🌎 </wlabel>
+<!-- hello_world 
+     a nice example
+     @param {string} [yourName="World"] your name (optional) -->
+<script>
+  wrangl.main = function () {
+
+    //Press the play button on the code editor menu bar
+    // then press enter, or type your name first!
+
+    return `Hello, ${wrangl.args.yourName.data}!`
+  }
+</script>
+##WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK##
+
+
+<wlabel> 👋🏛 </wlabel>
+<!-- hello_column 
+     demonstrates "column" data type
+     @param {column} [optionalCol=A] a optional column
+-->
+<script>
+  wrangl.main = function () {
+
+    //When Wrangl sees an input parameter with type "column", 
+    // it validates the column name and provides the column data
+    // inside wrangl.args
+
+    //Enter some data in column "A" before running this one
+
+    return wrangl.args.optionalCol.data;
+
+    //And then enter some values in "B" and kick off
+    // "hello_column B" in the Wrangl console
+
+    //btw, returned json objects get automatically stringified 
+    // for the 'results' section)
+  }
+</script>
+##WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK##
+
+<wlabel> 👋🕶 </wlabel>
+<!-- hello_matrix
+     demonstrates "matrix" data type
+     @param {matrix<number>} [optionalMatrix=neo] a optional column
+-->
+<script>
+  wrangl.main = async () => {
+    if (wrangl.args.optionalMatrix.data[0] === null) {
+      println('i added the default matrix "neo" for you')
+      await wrangl.putMatrix({ matrixName: 'neo', m: [[1, 2], [3, 4]] });
+    }
+    const userInputMatrixName = wrangl.args.optionalMatrix.values[0];
+    const m = await wrangl.getMatrix({ matrixName: userInputMatrixName });
+    const mStr = await wrangl.stringifyMatrix(m);
+    println(`input matrix (${userInputMatrixName}):`);
+    println(mStr);
+    const mMinus1 = m;
+
+    mMinus1.forEach(rowAr => {
+      for (let i = 0; i < rowAr.length; i++) {
+        rowAr[i] -= 1;
+      }
+    })
+    const outputMatrixName = userInputMatrixName + '-1';
+    println(`output matrix (${outputMatrixName}):`);
+    println(await wrangl.stringifyMatrix(mMinus1));
+
+    await wrangl.putMatrix({ matrixName: outputMatrixName, m: mMinus1 });
+  }
+</script>
+##WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK##
+
+<wlabel> 🏛❗️</wlabel>
+<!-- required_column 
+     demonstrates (i) required parameters, (ii) println
+     @param {column} veryImportantColumn a required column
+-->
+<script>
+  wrangl.main = function () {
+
+
+    //println, print, and printlnErr are functions to display 
+    // multiple lines in the Wrangl console.  
+    println(JSON.stringify(wrangl.args, null, 2));
+
+
+    //"returned" values get outputted to a special block in the Wrangl console.
+    return wrangl.args.veryImportantColumn.data;
+  }
+</script>
+##WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK##
+
+<wlabel> 👋🐭 </wlabel>
+<!--hello_mouse teensy tinesie-->
+<script>wrangl.main = () => '🐭';</script>
+
+
+##WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK##
+
+<wlabel> 🎤👯‍♂️ </wlabel>
+<!-- inputSync 
+     with inputSync tag, the app is run per change in the input
+     @inputSync true
+     @argsStrHint "Distinguished Wranglr"
+     @param {string} [yourName="World"] your name (optional) -->
+<script>
+  wrangl.main = function () {
+
+    //Press the play button on the code editor menu bar
+    // then press enter, or type your name first!
+
+    return `Hello, ${wrangl.args.yourName.data}!`
+  }
+</script>
+##WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK##
+
+
+<wlabel> 👋📦 </wlabel>
+<!-- hello_external_scripts
+     a nice example
+     @param {column<number>} [col=A] input column
+     @returns {number} standard deviation of the input column -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/6.6.4/math.min.js"></script>
+<script>
+  wrangl.main = () => math.std(wrangl.args.col.data);
+</script>
+
+##WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK####WRANGLAPPBREAK##
+
+<wlabel>🎓📈 </wlabel>
+<!--hello_correlogram
+    d3 visualization demo - multiple correlations chart.
+    # By the way
+    *descriptions* _support_ <em>markdown</em>
+    @param {column<string>} categoricalCol sdf descfwef awef 
+    @param {column<number>[]} numericCols sdf descfwef awef 
+    @param {...string} [colors] sd  awef awef fdesc -->
+<!--
+
+you'll need some real data for this one. 
+
+1.  load this: http://wrangl.io/load?type=url&value=https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/iris.csv
+
+2.  then -- with this Editor open -- try running these in the Wrangl console:
+
+hello_correlogram  Species, [Sepal_Length, Sepal_Width], blue, green, red
+
+hello_correlogram  Species, [Sepal_Length, Sepal_Width, Petal_length], chocolate, crimson, darkgreen
+
+3.  Change the data in the sheet and watch the graphs update
+
+-->
+<!-- adapted from https://www.d3-graph-gallery.com/graph/correlogram_scatter.html -->
+<meta charset="utf-8">
+<script src="https://d3js.org/d3.v4.js"></script>
+<div id="my_dataviz"></div>
+
+<script>
+
+  //this is a hook to tell the Wrangl code runner to re-run your "main" function whenever the data changes
+  var onDataUpdate = true;
+
+  wrangl.main = function () {
+    var marginWhole = { top: 10, right: 10, bottom: 10, left: 10 };
+    var sizeWhole = 640 - marginWhole.left - marginWhole.right;
+
+    document.getElementById('my_dataviz').innerHTML = '';
+
+    var svg = d3.select("#my_dataviz")
+      .append("svg")
+      .attr("width", sizeWhole + marginWhole.left + marginWhole.right)
+      .attr("height", sizeWhole + marginWhole.top + marginWhole.bottom)
+      .append("g")
+      .attr("transform", "translate(" + marginWhole.left + "," + marginWhole.top + ")");
+
+    let inputColObjs = [];
+    inputColObjs = inputColObjs.concat(wrangl.args.categoricalCol.data);
+    inputColObjs = inputColObjs.concat(wrangl.args.numericCols.data);
+
+    wrangl.asRowObjs({ colObjs: inputColObjs }, function (data) {
+      var allVar = wrangl.args.numericCols.values;
+      var numVar = allVar.length
+      mar = 20
+      size = sizeWhole / numVar
+
+      var position = d3.scalePoint()
+        .domain(allVar)
+        .range([0, sizeWhole - size])
+
+      let colors = wrangl.args.colors.values;
+
+      if (!colors) {
+        colors = ["#402D54", "#D18975", "#8FD175", "steelblue"]
+      }
+      let categoryColumnName = 'Species';
+
+      let getUnique = ({ rows, colName }) => {
+        const s = new Set();
+        rows.forEach(r => s.add(r[colName]));
+        return s;
+      }
+
+      let categories = getUnique({ rows: data, colName: categoryColumnName });
+
+      var color = d3.scaleOrdinal()
+        .domain(categories)
+        .range([colors.pop(), colors.pop(), colors.pop()])
+      for (i in allVar) {
+        for (j in allVar) {
+          var var1 = allVar[i]
+          var var2 = allVar[j]
+          if (var1 === var2) { continue; }
+          xextent = d3.extent(data, function (d) { return +d[var1] })
+          var x = d3.scaleLinear()
+            .domain(xextent).nice()
+            .range([0, size - 2 * mar]);
+          yextent = d3.extent(data, function (d) { return +d[var2] })
+          var y = d3.scaleLinear()
+            .domain(yextent).nice()
+            .range([size - 2 * mar, 0]);
+          var tmp = svg
+            .append('g')
+            .attr("transform", "translate(" + (position(var1) + mar) + "," + (position(var2) + mar) + ")");
+          tmp.append("g")
+            .attr("transform", "translate(" + 0 + "," + (size - mar * 2) + ")")
+            .call(d3.axisBottom(x).ticks(3));
+          tmp.append("g")
+            .call(d3.axisLeft(y).ticks(3));
+          tmp
+            .selectAll("myCircles")
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("cx", function (d) { return x(+d[var1]) })
+            .attr("cy", function (d) { return y(+d[var2]) })
+            .attr("r", 3)
+            .attr("fill", function (d) { return color(d.Species) })
+        }
+      }
+      for (i in allVar) {
+        for (j in allVar) {
+          if (i != j) { continue; }
+          var var1 = allVar[i]
+          var var2 = allVar[j]
+          svg
+            .append('g')
+            .attr("transform", "translate(" + position(var1) + "," + position(var2) + ")")
+            .append('text')
+            .attr("x", size / 2)
+            .attr("y", size / 2)
+            .text(var1)
+            .attr("text-anchor", "middle")
+        }
+      }
+    })
+  }
+</script>
