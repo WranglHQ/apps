@@ -1,0 +1,34 @@
+<!-- derivative calculate the derivative in terms of x
+    @inputSync true
+    @argsStrHint "4x + x^2"
+    @param {string} [equation="4x + x^2"] single variable equation on x-->
+    <script src="https://unpkg.com/mathjs@7.0.1/dist/math.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script>math.import({ln: math.log});</script>
+    <script>
+      wrangl.main = () => {
+        // alert(math.derivative(math.parse('x^2'), math.parse('x')) );
+        const exprValue = wrangl.args.equation.data;
+        const derivativeResultStr = math.derivative(math.parse(exprValue), math.parse('x')).toString();
+        const pretty = document.getElementById('pretty')
+        const mathjaxCode = math.parse(exprValue).toTex({ parenthesis: 'keep' });
+        const mathjaxRslt = math.parse(derivativeResultStr).toTex({ parenthesis: 'keep' });
+        console.log('mathjaxCode::')
+        console.log(mathjaxCode)
+        const innerHtml = '$$\\frac{ d}{ dx}' + mathjaxCode + ' = ' + mathjaxRslt + '$$'
+        console.log('innerHtml::')
+        console.log(innerHtml)
+    
+        pretty.innerHTML = innerHtml
+        // pretty.innerHTML = '$$\\frac{ d}{ dx}' + mathjaxCode + '$$'
+        // pretty.innerHTML = '$$' + mathjaxRslt + '$$'
+        MathJax.Hub.Typeset();
+        setTimeout(() => { pretty.style.display = 'inherit'; }, 100);
+      }
+    </script>
+    <style>
+      #MathJax_Message {
+        display: none;
+      }
+    </style>
+    <div id="pretty" style="display:none;"></div>

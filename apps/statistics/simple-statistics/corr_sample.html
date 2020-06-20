@@ -1,0 +1,13 @@
+<!-- corr_sample sample correlation by simple statistics
+    @argsStrHint A, B
+    @param {Array<number>} [x=A] col name or array
+    @param {Array<number>} [y=A] col name or array
+  -->
+  <script src="https://unpkg.com/simple-statistics@7.1.0/dist/simple-statistics.min.js"></script>
+  <script>
+    wrangl.main = () => {
+      out('wrangl::')
+      out(wrangl)
+      return ss.sampleCorrelation(wrangl.args.x.data, wrangl.args.y.data).toFixed(2);
+    }
+  </script>
