@@ -1,0 +1,77 @@
+<!-- putmatrixtest
+     demonstrates "matrix" data type
+     @argsStrHint [[1,2,3],[4,3,2]]
+     @param {matrix<number>} [optionalMatrix=] a optional column
+-->
+<script>
+  //     @param {matrix<number>} [optionalMatrix=] a optional column
+  //note: no default param is given cos defaults only work for strings rn
+
+  wrangl.onDataChange = false;
+  //TODO dont wipe output if onDataChange is turned off!
+
+  wrangl.main = async () => {
+    out('wrangl.args!')
+    out(wrangl.args)
+    let m = wrangl.args.optionalMatrix.data;
+
+    if (m) {
+      println('printing the inputted matrix to the sheet')
+      await wrangl.putMatrix({ m });
+    }
+    else {
+      let neo = await wrangl.getMatrix({ matrixName: 'neo' });
+
+      if (!neo) {
+        neo = [[1, 2], [3, 4]];
+        out('tried to println...')
+        println('i added the default matrix "neo" for you')
+        await wrangl.putMatrix({ matrixName: 'neo', m: neo });
+      }
+      else {
+        println('i see a matrix named neo.  have a nice day')
+      }
+      m = neo;
+      // out('tried to println...')
+      // println('i added the default matrix "neo" for you')
+      // m = [[1, 2], [3, 4]];
+      // await wrangl.putMatrix({ matrixName: 'neo', m });
+    }
+    // if (!wrangl.args.optionalMatrix.data) {
+    //   println('i added the default matrix "neo" for you')
+    //   await wrangl.putMatrix({ matrixName: 'neo', m: [[1, 2], [3, 4]] });
+    // }
+
+    // const m = await wrangl.getMatrix({ matrixName: 'neo' });
+
+    // if (!m) {
+    //     out('tried to println...')
+    //   println('i added the default matrix "neo" for you')
+    //   await wrangl.putMatrix({ matrixName: 'neo', m: [[1, 2], [3, 4]] });
+    // }
+    // else { 
+    //     out('m::')
+    //     out(m)
+    // }
+    return m;
+    // const userInputMatrixName = wrangl.args.optionalMatrix.values[0];
+    // const m = await wrangl.getMatrix({ matrixName: 'c' });
+    // out('m::')
+    // out(m)
+    // const mStr = await wrangl.stringifyMatrix(m);
+    // println(`input matrix (${userInputMatrixName}):`);
+    // println(mStr);
+    // const mMinus1 = m;
+
+    // mMinus1.forEach(rowAr => {
+    //   for (let i = 0; i < rowAr.length; i++) {
+    //     rowAr[i] -= 1;
+    //   }
+    // })
+    // const outputMatrixName = userInputMatrixName + '-1';
+    // println(`output matrix (${outputMatrixName}):`);
+    // println(await wrangl.stringifyMatrix(mMinus1));
+
+    // await wrangl.putMatrix({ matrixName: outputMatrixName, m: mMinus1 });
+  }
+</script>
