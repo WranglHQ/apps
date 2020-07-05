@@ -1,0 +1,72 @@
+<!-- normal generates normally distributed samples and returns a jStat.normal object.
+
+https://jstat.github.io/all.html#jStat.normal
+
+to use the returned jStat.normal object in subsequent commands, save it to a window variable like:
+
+    window.myNormal = normal()
+
+and then you can try:
+
+    myNormal.sample()
+    myNormal.mode()
+    myNormal.variance()
+    myNormal.pdf(0.1)
+    
+etc
+note that these are NOT functions on any generated samples.  you'll need to run wrangl apps on the generated column for that
+
+@param {number} [mean=0] mean
+@param {number} [standardDeviation=1] standard deviation
+@param {number} [n=500] number of samples to generate in current sheet
+@param {string} [colName="normal"] new column name
+  -->
+  <script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+  <script>
+    wrangl.onDataChange = async () => {
+      console.log('in onDataChange, colname: ' + wrangl.colname);
+      let colName = wrangl.colname;
+      let ar = await wrangl.getCol({ colName, trimmed: true });
+      var trace = {
+        x: ar,
+        type: 'histogram',
+      };
+      var data = [trace];
+      Plotly.newPlot('normal_with_graph_Plotly_divid', data);
+    }
+    wrangl.onMount = async () => {
+      console.log('geasdfasdfes:')
+  
+  
+      let mean = wrangl.args.mean.data;
+      let std = wrangl.args.standardDeviation.data;
+      let len = wrangl.args.n.data;
+      let colName = wrangl.args.colName.data;
+  
+      const norm = jStat.normal(mean, std)
+  
+      const ar = Array(len).fill(0).map(x => jStat.normal.sample(mean, std))
+      console.log('generated values or len: ' + ar.length)
+      console.log(ar)
+      let asdf = await wrangl.putCol({ ar, colName, overwrite: false })
+      wrangl.colname = asdf;
+      console.log('asdf:')
+      console.log(asdf)
+  
+      return {
+        result: norm,
+        externalJsUrl: "https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js",
+        input: { mean, std },
+        mycallback: (input) => {
+          return jStat.normal(input.mean, input.std);
+        }
+      };
+  
+  
+    }
+  </script>
+  
+  <div id='normal_with_graph_Plotly_divid'>
+    <!-- Plotly chart will be drawn inside this DIV -->
+  </div>

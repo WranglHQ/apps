@@ -1,0 +1,33 @@
+<!-- determinate_sample returns the determinant of the input matrix
+    @argsStrHint A
+    @param {matrix<number>} [x] matrix name or 2d array
+  -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/6.6.4/math.min.js"></script>
+
+  <script>
+    //if matrix A DNE, then generate one and say so
+  //   wrangl.onDataChange= false asdf asdf 
+  
+   wrangl.onError = (err) =>{
+       println('caught an error!!!');
+       println(err);
+   }
+  
+    wrangl.main = async () => {
+      out('wrangl.args::')
+      out(wrangl.args)
+      println('hi')
+      let m = wrangl.args.x.data;
+      if (!m) {
+        let a = await wrangl.getMatrix({matrixName: 'A'});
+        if (!a){
+            println('input matrix not found.  adding one as a demo.  now try this app again')
+            await wrangl.putMatrix({ matrixName: 'A', m: [[1, 2, 3], [4, 5, 6], [7, 8, 9]] });
+        }
+      }
+      else {
+        const det = math.det(m);
+        return det;
+      }
+    }
+  </script>

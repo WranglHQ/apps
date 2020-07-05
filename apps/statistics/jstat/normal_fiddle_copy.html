@@ -1,0 +1,195 @@
+<!-- normal_graphed generates and graphs a normally distributed sample
+
+  https://stackoverflow.com/questions/25582882/javascript-math-random-normal-distribution-gaussian-bell-curve/49434653#49434653
+https://jsfiddle.net/2uc346hp/
+
+@param {number} [n=10000] n
+@param {number} [step=1] step
+@param {number} [max=100] 
+@param {number} [min=0] 
+@param {string} [colName="normal"] new column name
+  -->
+<script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+
+<script>
+  wrangl.onDataChange = false;
+  wrangl.main = async () => {
+
+    // let n = 10000;
+    // let step = 1;
+    // let max = 100;
+    // let min = 0;
+    // let data = {};
+
+    let n = wrangl.args.n.data;;
+    let step = wrangl.args.step.data;
+    let max = wrangl.args.max.data;
+    let min = wrangl.args.min.data;
+    let data = {};
+
+
+    // let mean = wrangl.args.mean.data;
+    // let std = wrangl.args.standardDeviation.data;
+    // let len = wrangl.args.length.data;
+    // let colName = wrangl.args.colName.data;
+
+
+    const randn_bm = (min, max, skew) => {
+      var u = 0, v = 0;
+      while (u === 0) u = Math.random(); //Converting [0,1) to (0,1)
+      while (v === 0) v = Math.random();
+      let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+
+      num = num / 10.0 + 0.5; // Translate to 0 -> 1
+      if (num > 1 || num < 0) num = randn_bm(min, max, skew); // resample between 0 and 1 if out of range
+      num = Math.pow(num, skew); // Skew
+      num *= max - min; // Stretch to fill range
+      num += min; // offset to min
+      return num;
+    }
+
+    const round_to_precision = (x, precision) => {
+      var y = +x + (precision === undefined ? 0.5 : precision / 2);
+      return y - (y % (precision === undefined ? 1 : +precision));
+    }
+
+
+    // Seed data with a bunch of 0s
+    for (let j = min; j < max; j += step) {
+      data[j] = 0;
+    }
+
+    let ar = [];
+
+    // Create n samples between min and max
+    for (i = 0; i < n; i += step) {
+      let rand_num = randn_bm(min, max, 1);
+      ar.push(rand_num);
+      let rounded = round_to_precision(rand_num, step)
+      out(`x: ${rand_num}, round: ${rounded}`);
+      data[rounded] += 1;
+    }
+
+    out('data::')
+    out(data)
+
+    let colName = wrangl.args.colName.data;
+    wrangl.putCol({ ar, colName, overwrite: false })
+
+
+    // Count number of samples at each increment
+    let hc_data = [];
+    for (const [key, val] of Object.entries(data)) {
+      hc_data.push({ "x": parseFloat(key), "y": val / n });
+    }
+
+    out('hc_data::')
+    out(hc_data)
+
+    // Sort
+    hc_data = hc_data.sort(function (a, b) {
+      if (a.x < b.x) return -1;
+      if (a.x > b.x) return 1;
+      return 0;
+    });
+
+    Highcharts.chart('container', {
+
+
+      title: {
+        text: 'Normal Distribution'
+      },
+
+
+      yAxis: {
+        title: {
+          text: 'Percentage chance'
+        }
+      },
+
+      xAxis: {
+        ordinal: false
+      },
+
+      legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+      },
+
+      plotOptions: {
+      },
+
+      series: [{
+        name: 'Percent chance',
+        data: hc_data
+      }],
+
+      responsive: {
+        rules: [{
+          condition: {
+            maxWidth: 500
+          },
+          chartOptions: {
+            legend: {
+              layout: 'horizontal',
+              align: 'center',
+              verticalAlign: 'bottom'
+            }
+          }
+        }]
+      }
+
+    });
+  }
+</script>
+
+<style>
+  .highcharts-figure,
+  .highcharts-data-table table {
+    min-width: 360px;
+    max-width: 800px;
+    margin: 1em auto;
+  }
+
+  .highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #EBEBEB;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+  }
+
+  .highcharts-data-table th {
+    font-weight: 600;
+    padding: 0.5em;
+  }
+
+  .highcharts-data-table td,
+  .highcharts-data-table th,
+  .highcharts-data-table caption {
+    padding: 0.5em;
+  }
+
+  .highcharts-data-table thead tr,
+  .highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+  }
+
+  .highcharts-data-table tr:hover {
+    background: #f1f7ff;
+  }
+</style>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+
+<figure class="highcharts-figure">
+  <div id="container"></div>
+</figure>

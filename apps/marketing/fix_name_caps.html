@@ -1,0 +1,31 @@
+<!-- fix_name_caps 
+     fix capitalization for peoples' names
+     @param {column} [columnName="A"] column name or array of peoples' names to fix capitalization -->
+     <script src="https://namecase-browserified.onrender.com/min.js"></script>
+
+<script>
+  //https://cdn.jsdelivr.net/npm/namecase@1.1.2/namecase.js
+  wrangl.onMount = function () {
+
+    const ar = wrangl.args.columnName.data;
+    const capd = ar.map(n => NameCase(n));
+    // println(capd);
+
+    // wrangl.putCol({ar, colName: wrangl.args.columnName.values + '_fix'})
+    wrangl.putCol({ar: capd, colName:  '_fix'})
+
+
+    // var name = "GEORGE WASHINGTON";
+
+    // if (NameCase.checkName(name)) {
+    //   println(NameCase(name));
+    // } else {
+    //   println(NameCase(name));
+    // }
+
+    //Press the play button on the code editor menu bar
+    // then press enter, or type your name first!
+
+    // return `Hello, ${wrangl.args.yourName.data}!`
+  }
+</script>

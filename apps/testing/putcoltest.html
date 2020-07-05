@@ -1,0 +1,18 @@
+<!-- putcoltest 
+     a nice example-->
+<script>
+  wrangl.onMount = async function () {
+    let colName = await wrangl.putCol({ ar: [1, 2, 3], colName: 'coolname', overwrite: false });
+    wrangl.stuartcolName = colName;
+    println('onMount - col added: ' + colName);
+    return `Hello onMount!`
+  }
+  wrangl.onDataChange = function () {
+    println('onDataChange - colname is ' + wrangl.stuartcolName );
+    return `Hello onMount!`
+  }
+  wrangl.main = function () {
+    println('main');
+    return `Hello main!`
+  }
+</script>
