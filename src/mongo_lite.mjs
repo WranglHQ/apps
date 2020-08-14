@@ -23,7 +23,7 @@ export async function storeFunctionToCloud({ content, token }) {
     out('url::')
     out(url);
 
-// TODO start here 
+// TODO start here ??
 // ReferenceError: test2 is not defined
 // ... figure out how to acutally publish mod from cmd line
 //not working rn
