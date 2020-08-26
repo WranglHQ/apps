@@ -7,7 +7,7 @@
   <script>
     //if matrix A DNE, then generate one and say so
     wrangl.onDataChange= false
-    wrangl.main = () => {
+    wrangl.main = async () => {
       let m = wrangl.args.x.data;
       if (!m) {
         println('input matrix not found.  adding one as a demo.  now try this app again')
