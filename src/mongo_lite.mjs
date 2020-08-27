@@ -15,6 +15,8 @@ export async function storeFunctionToCloud({ content, token }) {
     console.log('content::');
     console.log(content);
 
+    //trigger upload to new 'wrangl' username account
+
     console.log('----end of content----');
     //https://github.com/robisonmark/mhac/blob/4a511e24a3b6684dc1031e472bc47197868f06be/src/api/endpoints.js
     //https://stackoverflow.com/questions/6408904/send-post-request-with-data-specified-in-file-via-curl
